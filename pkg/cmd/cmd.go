@@ -59,6 +59,7 @@ type rootCmdOptions struct {
 	k8sOptions     *genericclioptions.ConfigFlags
 	localPort      int
 	remoteHostPort string
+	nodeName       string
 	image          string
 }
 
@@ -81,6 +82,7 @@ func (cmd Cmd) newRootCmd() *cobra.Command {
 	c.Flags().IntVarP(&o.localPort, "local-port", "l", 0, "local port")
 	c.Flags().StringVarP(&o.remoteHostPort, "remote-host", "r", "", "remote host:port")
 	c.Flags().StringVarP(&o.image, "image", "", defaultImage, "Pod image")
+	c.Flags().StringVarP(&o.nodeName, "node", "", "", "node specification")
 
 	gf := flag.NewFlagSet("", flag.ContinueOnError)
 	klog.InitFlags(gf)
@@ -106,6 +108,7 @@ func (cmd Cmd) runRootCmd(ctx context.Context, o rootCmdOptions, args []string) 
 		Tunnels:   tunnels,
 		Namespace: namespace,
 		PodImage:  o.image,
+		NodeName:  o.nodeName,
 	})
 }
 

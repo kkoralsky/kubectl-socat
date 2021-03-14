@@ -27,6 +27,7 @@ type Option struct {
 	Tunnels   []Tunnel
 	Namespace string
 	PodImage  string
+	NodeName  string
 }
 
 type Tunnel struct {
@@ -76,6 +77,9 @@ func (f ExternalForwarder) Do(ctx context.Context, o Option) error {
 	})
 
 	eg.Go(func() error {
+		if len(o.NodeName) > 0 {
+			klog.Infof("Trying to schedule on: %s", o.NodeName)
+		}
 		if err := waitForPodRunning(ctx, clientset, socatPod.Namespace, socatPod.Name, 30*time.Second); err != nil {
 			return fmt.Errorf("socat pod is not running: %w", err)
 		}

@@ -20,7 +20,7 @@ func newPod(o Option) *corev1.Pod {
 		ObjectMeta: metav1.ObjectMeta{
 			GenerateName: "socat-",
 		},
-		Spec: corev1.PodSpec{},
+		Spec: corev1.PodSpec{NodeName: o.NodeName},
 	}
 	for i, tunnel := range o.Tunnels {
 		pod.Spec.Containers = append(pod.Spec.Containers, corev1.Container{
